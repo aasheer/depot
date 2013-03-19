@@ -15,7 +15,12 @@ class ProductsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:products)
-  end
+    assert_select '.list_actions a', minimum: 3
+    assert_select '.list_actions a' do
+      assert_select "[href=?]", /.+/                     #checks that href tags are not empty
+    end
+    assert_select '.list_description dl dd', 'Ruby is the fastest growing and most exciting dynamic language out there.'  
+end
 
   test "should get new" do
     get :new
